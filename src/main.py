@@ -83,49 +83,49 @@ class CodeAnalyzer:
 
     def validate_indentation(self, line_number: int, line: str, error_code: str):
         # Validate indentation according to PEP8
-        if len(re.search(r'^ *', line).group()) % 4 != 0:
+        if len(re.search(r"^ *", line).group()) % 4 != 0:
             CodeAnalyzer.set_report(self, line_number, error_code)
 
     def validate_semicolon(self, line_number: int, line: str, error_code: str):
         # Validate semicolon according to PEP8
-        if self.desc_lines[line_number - 1] == 'code':
-            if re.search(r';$', line):
+        if self.desc_lines[line_number - 1] == "code":
+            if re.search(r";$", line):
                 CodeAnalyzer.set_report(self, line_number, error_code)
-        if self.desc_lines[line_number - 1] == 'inline_comment':
-            if re.search(r'.*;.*#', line):
+        if self.desc_lines[line_number - 1] == "inline_comment":
+            if re.search(r".*;.*#", line):
                 CodeAnalyzer.set_report(self, line_number, error_code)
 
     def validate_inline_comments(self, line_number: int, line: str, error_code: str):
         # Validate inline comments according to PEP8
-        if self.desc_lines[line_number - 1] == 'inline_comment' and re.search(r' {2}#', line) is None:
+        if self.desc_lines[line_number - 1] == "inline_comment" and re.search(r" {2}#", line) is None:
             CodeAnalyzer.set_report(self, line_number, error_code)
 
     def validate_todo(self, line_number: int, line: str, error_code: str):
-        # Validate 'TODOs' according to PEP8
-        if re.search(r'#.*todo', line, re.IGNORECASE):
+        # Validate "TODOs" according to PEP8
+        if re.search(r"#.*todo", line, re.IGNORECASE):
             CodeAnalyzer.set_report(self, line_number, error_code)
 
     def validate_blank_lines(self, line_number: int, error_code: str):
         # Validate blank lines according to PEP8
-        if self.desc_lines[line_number - 1] != 'blank_line':
+        if self.desc_lines[line_number - 1] != "blank_line":
             if self.blank_lines > 2:
                 CodeAnalyzer.set_report(self, line_number, error_code)
             self.blank_lines = 0
 
     def validate_blank_lines_after_class(self, line_number: int, line: str, error_code: str):
         # Validate blank lines after class according to PEP8
-        res = re.search(r'^ *(?P<constructor>def|class)(?P<space> *)', line)
-        if res is not None and len(res.group('space')) > 1:
+        res = re.search(r"^ *(?P<constructor>def|class)(?P<space> *)", line)
+        if res is not None and len(res.group("space")) > 1:
             CodeAnalyzer.set_report(self, line_number, error_code)
 
     def validate_camel_case(self, line_number: int, line: str, error_code: str):
         # Validate camel case according to PEP8
-        if re.search(r'^class *', line) and re.search(r'(?P<constructor>class) *[A-Z]([a-zA-Z0-9])*', line) is None:
+        if re.search(r"^class *", line) and re.search(r"(?P<constructor>class) *[A-Z]([a-zA-Z0-9])*", line) is None:
             CodeAnalyzer.set_report(self, line_number, error_code)
 
     def validate_snake_case(self, line_number: int, line: str, error_code: str):
         # Validate snake case according to PEP8
-        if re.search(r'(^| *)def *', line) and re.search(r'def *[a-z_]{1,2}([a-z0-9_]*_{0,2})', line) is None:
+        if re.search(r"(^| *)def *", line) and re.search(r"def *[a-z_]{1,2}([a-z0-9_]*_{0,2})", line) is None:
             CodeAnalyzer.set_report(self, line_number, error_code)
 
     def check_node(self, path: str):
@@ -133,7 +133,7 @@ class CodeAnalyzer:
         # S010: Function arguments should be in snake case
         # S011: Variable names should be in snake case
         # S012: Default arguments should be in list
-        with open(path, 'r') as f:
+        with open(path, "r") as f:
             script = f.read()
         tree = ast.parse(script)
         for node in ast.walk(tree):
@@ -150,10 +150,10 @@ class CodeAnalyzer:
 
     def check_snake_case_node(self, name: str, error_code: str, line_number: int):
         # Validate snake case according to PEP8 for AST tree
-        if re.search(r'^[a-z_]{1,2}[a-z0-9_]*_{0,2}$', name) is None:
+        if re.search(r"^[a-z_]{1,2}[a-z0-9_]*_{0,2}$", name) is None:
             CodeAnalyzer.set_report(self, line_number, error_code)
 
-    def set_report(self, n_line, error_code):
+    def set_report(self, n_line: int, error_code: str):
         # Add error to report
         self.report[n_line].append(error_code)
 
