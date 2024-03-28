@@ -2,11 +2,9 @@
 
 This simple static analyzer tool finds common stylistic issues in Python code. I built this tool to help me learn more about static analysis and regular expressions. It is not meant to be a replacement for a full-fledged static analysis tool like Pylint or Pyflakes.
 
-This is part of a [JetBrains Academy](https://hyperskill.org/projects/112) project.
-
 ## Requirements
 
--   Python 3
+-   Python 3.9 or higher
 
 _No external libraries are required._
 
@@ -15,13 +13,13 @@ _No external libraries are required._
 1. Clone the repository
 
 ```shell
-git clone https://github.com/dan-koller/Python-Generating-Randomness
+git clone https://github.com/dan-koller/static-code-analyzer
 ```
 
 2. Create a virtual environment\*
 
 ```shell
-python3 -m venv venv
+python3 -m venv .venv
 ```
 
 3. Run the app\*
